@@ -47,14 +47,18 @@ public class ClientHandle : MonoBehaviour
 
     }
 
-    public static void NewPlayerToAll(Packet _packet)
+    public static void NewPlayerJoins(Packet _packet)
     {
         int _playerId = _packet.ReadInt();
         string _playerName = _packet.ReadString();
         int _placeNum = _packet.ReadInt();
 
-        UIManagerGame.instance.ShowMsgToChat("servise", _playerName);
-        UIManagerGame.instance.NewOpponent(_placeNum, _playerName);
+        UIManagerGame.instance.ShowMsgToChat("service", _playerName);
+
+        if(_playerId == Client.instance.myId)
+            UIManagerGame.instance.NewPlayer(_placeNum, _playerName);
+        else
+            UIManagerGame.instance.NewOpponent(_placeNum, _playerName);
 
 
     }

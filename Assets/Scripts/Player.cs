@@ -13,6 +13,7 @@ class Player : MonoBehaviour
 
     public void ShowPreflop(Card card1, Card card2)
     {
+      //  Debug.Log($"ShowPreflop");
         cards[0] = card1;
         cards[1] = card2;
 
@@ -23,18 +24,10 @@ class Player : MonoBehaviour
         Texture2D img1 = Resources.Load("Cards/" + imgFileName1) as Texture2D;
         Texture2D img2 = Resources.Load("Cards/" + imgFileName2) as Texture2D;
 
-        //RawImage rawImage = prefab.GetComponentInChildren<RawImage>();
+        RawImage[] rawImage = prefab.GetComponentsInChildren<RawImage>();
 
-         
-        
-
-        //RawImage rawImage = prefab.GetComponent<RawImage>();
-        // RawImage[] rawImage = prefab.GetComponentsInChildren<RawImage>();
-
-       // rawImage.texture = img1;
-       // rawImage[1].texture = img2;
-
-        
-
+        rawImage[0].texture = img1;
+        rawImage[1].texture = img2;
+   
     }
 }

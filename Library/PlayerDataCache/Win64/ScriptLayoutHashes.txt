@@ -1,6 +1,6 @@
 Win64
 PlayerPath?
-C:/Project/csharp/MyPoker/Game/GameClient.exe
+C:/Projects/csharp/poker/Game/GameClient.exe
 SceneListBegin?
 Assets/Scenes/Main.unity
 Assets/Scenes/GameTable.unity

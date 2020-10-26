@@ -171,7 +171,7 @@ class UIManagerGame : MonoBehaviour
 
     public void Preflop(Card card1, Card card2)
     {
-        Debug.Log($"prefab.name {player.prefab.name}");
+        
         player.ShowPreflop(card1, card2);
     }
 }
