@@ -13,7 +13,8 @@ public enum ServerPackets
     newPlayer,
     newPlayerToAll,
     chatMsgSend,
-    playerLeaveRoom
+    playerLeaveRoom,
+    preflop,
 }
 
 /// <summary>Sent from client to server.</summary>

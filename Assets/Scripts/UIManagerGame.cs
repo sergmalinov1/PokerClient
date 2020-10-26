@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Cards;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,9 @@ class UIManagerGame : MonoBehaviour
 {
     public static UIManagerGame instance;
 
-    
+    //=========GAME MANAGER ===============
+   // public Card[] cards = new Card[2];
+
     public InputField chatInput;
     public Transform chatContent;
     public GameObject chatMessage;
@@ -21,7 +24,8 @@ class UIManagerGame : MonoBehaviour
     public GameObject playerPrefab;
     public Transform gameField;
 
-    private List<GameObject> players = new List<GameObject>();
+    private List<Player> opponent = new List<Player>();
+    private Player player = new Player();
 
     private void Awake()
     {
@@ -73,50 +77,77 @@ class UIManagerGame : MonoBehaviour
         ClientSend.JoinTheRoom();
     }
 
-
     public void NewPlayer(int _placeNum, string _userName)
+    {
+        Debug.Log($"NewPlayer 222 ");
+        Vector3 pos = place[_placeNum].transform.position;
+        Quaternion rotation = place[_placeNum].transform.rotation;
+
+
+
+        player.prefab = Instantiate(playerPrefab, pos, rotation, gameField);
+
+        Text[] content = player.prefab.GetComponentsInChildren<Text>();
+
+        for (int i = 0; i < content.Length; i++)
+        {
+            if (content[i].name == "username")
+                content[1].text = _userName; //User name
+        }
+
+
+        player.prefab.GetComponent<PlayerScript>().ID = _placeNum;
+        player.prefab.name = "Player_" + _placeNum.ToString();
+
+        Debug.Log($"prefab.name {player.prefab.name}");
+
+    }
+
+    public void NewOpponent(int _placeNum, string _userName)
     {
        // Debug.Log("_plaseNum " + _placeNum);
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
-        GameObject newPlayer = Instantiate(playerPrefab, pos, rotation, gameField);
 
-        Text[] content = newPlayer.GetComponentsInChildren<Text>();
+        Player newPlayer = new Player();
 
+        newPlayer.prefab = Instantiate(playerPrefab, pos, rotation, gameField);
+
+        Text[] content = newPlayer.prefab.GetComponentsInChildren<Text>();
 
         for(int i=0; i< content.Length; i++)
         {
             if(content[i].name == "username")
                 content[1].text = _userName; //User name
         }
-      
 
-       
 
-        newPlayer.GetComponent<PlayerScript>().ID = _placeNum;
-        newPlayer.name = "Player_" + _placeNum.ToString();
+        newPlayer.prefab.GetComponent<PlayerScript>().ID = _placeNum;
+        newPlayer.prefab.name = "Player_" + _placeNum.ToString();
 
-        players.Add(newPlayer);
+        opponent.Add(newPlayer);
+
+
     }
 
     public void LeaveRoom(int _placeNum)
     {
         string prefabName = "Player_" + _placeNum.ToString();
 
-        GameObject playerToDestroy = null; 
+        Player playerToDestroy = null; 
 
-        foreach (GameObject player in players)
+        foreach (Player opn in opponent)
         {
-            if (player.name == prefabName)
+            if (opn.prefab.name == prefabName)
             {
-                Destroy(player.gameObject);
-                playerToDestroy = player;
+                Destroy(opn.prefab.gameObject);
+                playerToDestroy = opn;
             }
         }
 
         if(playerToDestroy != null)
         {
-            players.Remove(playerToDestroy);
+            opponent.Remove(playerToDestroy);
         }
 
        /*
@@ -133,5 +164,14 @@ class UIManagerGame : MonoBehaviour
     public void Disconect()
     {
         Client.instance.Disconnect();
+    }
+
+
+    //=========GAME MANAGER ===============
+
+    public void Preflop(Card card1, Card card2)
+    {
+        Debug.Log($"prefab.name {player.prefab.name}");
+        player.ShowPreflop(card1, card2);
     }
 }

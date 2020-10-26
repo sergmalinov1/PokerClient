@@ -310,9 +310,10 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.authAnswer, ClientHandle.AuthAnswer },
             { (int)ServerPackets.newSpectator, ClientHandle.NewSpectator },
             { (int)ServerPackets.newPlayer, ClientHandle.NewPlayer },
-            { (int)ServerPackets.newPlayerToAll, ClientHandle.NewPlayer },
+            { (int)ServerPackets.newPlayerToAll, ClientHandle.NewPlayerToAll },
             { (int)ServerPackets.chatMsgSend, ClientHandle.GetChatMsg },
             { (int)ServerPackets.playerLeaveRoom, ClientHandle.PlayerLeaveRoom },
+            { (int)ServerPackets.preflop, ClientHandle.Preflop },
 
         };
 
