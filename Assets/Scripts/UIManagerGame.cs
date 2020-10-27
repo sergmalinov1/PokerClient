@@ -26,6 +26,7 @@ class UIManagerGame : MonoBehaviour
 
     private List<Player> opponent = new List<Player>();
     private Player player = new Player();
+    public GameObject canvas;
 
     private void Awake()
     {
@@ -74,12 +75,15 @@ class UIManagerGame : MonoBehaviour
     public void JoinToGame()
     {
         btnJoin.enabled = false;
+        btnJoin.gameObject.SetActive(false);
+
+
         ClientSend.JoinTheRoom();
     }
 
     public void NewPlayer(int _placeNum, string _userName)
     {
-        Debug.Log($"NewPlayer 222 ");
+      //  Debug.Log($"NewPlayer 222 ");
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
 
@@ -99,7 +103,7 @@ class UIManagerGame : MonoBehaviour
         player.prefab.GetComponent<PlayerScript>().ID = _placeNum;
         player.prefab.name = "Player_" + _placeNum.ToString();
 
-        Debug.Log($"prefab.name {player.prefab.name}");
+       // Debug.Log($"prefab.name {player.prefab.name}");
 
     }
 
@@ -166,6 +170,13 @@ class UIManagerGame : MonoBehaviour
         Client.instance.Disconnect();
     }
 
+    public void SetRate(int rate)
+    {
+        HideRatesBtn();
+
+        ClientSend.Rate(rate);
+    }
+
 
     //=========GAME MANAGER ===============
 
@@ -173,5 +184,33 @@ class UIManagerGame : MonoBehaviour
     {
         
         player.ShowPreflop(card1, card2);
+    }
+
+    public void ShowRatesBtn()
+    {
+        GameObject btnGroup = GameObject.Find("RatesBtn");
+
+        Button[] buttons = btnGroup.GetComponentsInChildren<Button>(true);
+
+        foreach(Button btn in buttons)
+        {
+           // Debug.Log($"Button {btn.name}");
+            btn.gameObject.SetActive(true);
+        }
+
+    }
+
+    public void HideRatesBtn()
+    {
+        GameObject btnGroup = GameObject.Find("RatesBtn");
+
+        Button[] buttons = btnGroup.GetComponentsInChildren<Button>(true);
+
+        foreach (Button btn in buttons)
+        {
+            // Debug.Log($"Button {btn.name}");
+            btn.gameObject.SetActive(false);
+        }
+
     }
 }

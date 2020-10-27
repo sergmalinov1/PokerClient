@@ -314,6 +314,7 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.chatMsgSend, ClientHandle.GetChatMsg },
             { (int)ServerPackets.playerLeaveRoom, ClientHandle.PlayerLeaveRoom },
             { (int)ServerPackets.preflop, ClientHandle.Preflop },
+            { (int)ServerPackets.idActivePlayer, ClientHandle.ActivePlayer },
 
         };
 

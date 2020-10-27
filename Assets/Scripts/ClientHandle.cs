@@ -107,4 +107,20 @@ public class ClientHandle : MonoBehaviour
 
 
     }
+
+    public static void ActivePlayer(Packet _packet)
+    {
+        int idActivePlayer = _packet.ReadInt();
+
+        if(idActivePlayer == Client.instance.myId)
+        {
+            UIManagerGame.instance.ShowMsgToChat("server", "ваш ход блядь ");
+            UIManagerGame.instance.ShowRatesBtn();
+
+        }
+        else
+        {
+            UIManagerGame.instance.ShowMsgToChat("server", "ходит игрок " + idActivePlayer.ToString());
+        }
+    }
 }

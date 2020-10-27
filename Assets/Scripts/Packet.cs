@@ -15,6 +15,7 @@ public enum ServerPackets
     chatMsgSend,
     playerLeaveRoom,
     preflop,
+    idActivePlayer,
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -24,7 +25,8 @@ public enum ClientPackets
     chatMsgReceived,
     enterTheRoom,
     joinTheRoom,
-    disconect
+    disconect,
+    rate,
 
 }
 

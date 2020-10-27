@@ -60,7 +60,6 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-
     public static void JoinTheRoom()
     {
         using (Packet _packet = new Packet((int)ClientPackets.joinTheRoom))
@@ -86,6 +85,18 @@ public class ClientSend : MonoBehaviour
             SendTCPData(_packet);
         }
     }
+
+    public static void Rate(int _rate)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.disconect))
+        {
+           
+            _packet.Write(_rate);
+
+            SendTCPData(_packet);
+        }
+    }
+
 
     #endregion
 }
