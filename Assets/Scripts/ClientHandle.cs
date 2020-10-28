@@ -42,7 +42,7 @@ public class ClientHandle : MonoBehaviour
         int _placeNum = _packet.ReadInt();
 
         UIManagerGame.instance.ShowMsgToChat("servise", _playerName);
-        UIManagerGame.instance.NewPlayer(_placeNum, _playerName);
+        UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
        
 
     }
@@ -56,9 +56,9 @@ public class ClientHandle : MonoBehaviour
         UIManagerGame.instance.ShowMsgToChat("service", _playerName);
 
         if(_playerId == Client.instance.myId)
-            UIManagerGame.instance.NewPlayer(_placeNum, _playerName);
+            UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
         else
-            UIManagerGame.instance.NewOpponent(_placeNum, _playerName);
+            UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName);
 
 
     }
@@ -82,6 +82,16 @@ public class ClientHandle : MonoBehaviour
         UIManagerGame.instance.LeaveRoom(_placeNum);
 
     }
+
+
+    public static void PlayerInGame(Packet _packet)
+    {
+      
+        int idPlayer = _packet.ReadInt();
+
+        UIManagerGame.instance.ShowCover(idPlayer);
+    }
+
 
     public static void Preflop(Packet _packet)
     {

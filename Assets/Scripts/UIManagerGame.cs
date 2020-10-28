@@ -81,7 +81,7 @@ class UIManagerGame : MonoBehaviour
         ClientSend.JoinTheRoom();
     }
 
-    public void NewPlayer(int _placeNum, string _userName)
+    public void NewPlayer(int _idPlayer, int _placeNum, string _userName)
     {
       //  Debug.Log($"NewPlayer 222 ");
         Vector3 pos = place[_placeNum].transform.position;
@@ -99,7 +99,7 @@ class UIManagerGame : MonoBehaviour
                 content[1].text = _userName; //User name
         }
 
-
+        player.ID = _idPlayer;
         player.prefab.GetComponent<PlayerScript>().ID = _placeNum;
         player.prefab.name = "Player_" + _placeNum.ToString();
 
@@ -107,7 +107,7 @@ class UIManagerGame : MonoBehaviour
 
     }
 
-    public void NewOpponent(int _placeNum, string _userName)
+    public void NewOpponent(int _idPlayer, int _placeNum, string _userName)
     {
        // Debug.Log("_plaseNum " + _placeNum);
         Vector3 pos = place[_placeNum].transform.position;
@@ -125,7 +125,7 @@ class UIManagerGame : MonoBehaviour
                 content[1].text = _userName; //User name
         }
 
-
+        newPlayer.ID = _idPlayer;
         newPlayer.prefab.GetComponent<PlayerScript>().ID = _placeNum;
         newPlayer.prefab.name = "Player_" + _placeNum.ToString();
 
@@ -184,6 +184,17 @@ class UIManagerGame : MonoBehaviour
     {
         
         player.ShowPreflop(card1, card2);
+    }
+
+    public void ShowCover(int idPlayer)
+    {
+        Debug.Log($"UI ShowCover");
+        foreach (Player pl in opponent)
+        {
+            if (pl.ID == idPlayer)
+                pl.ShowCover();
+
+        }
     }
 
     public void ShowRatesBtn()

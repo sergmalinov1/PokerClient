@@ -32,7 +32,15 @@ public class UIManager : MonoBehaviour
         Client.instance.ConnectToServer();
     }
 
- 
+
+    public void ConnectToServerStatic(string _username)
+    {
+        //  startMenu.SetActive(false);
+        // usernameField.interactable = false;
+        // Debug.Log("ConnectToServer");
+        Client.instance.login = _username;
+        Client.instance.ConnectToServer();
+    }
 
     public void Disconect()
     {

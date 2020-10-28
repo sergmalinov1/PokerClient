@@ -30,4 +30,18 @@ class Player : MonoBehaviour
         rawImage[1].texture = img2;
    
     }
+
+    public void ShowCover()
+    {
+        Debug.Log($"ShowCover");
+
+        Texture2D img = Resources.Load("Cards/cover") as Texture2D;
+
+        RawImage[] rawImage = prefab.GetComponentsInChildren<RawImage>();
+
+        rawImage[0].texture = img;
+        rawImage[1].texture = img;
+
+    }
+
 }

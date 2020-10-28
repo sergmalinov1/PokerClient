@@ -313,6 +313,7 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.newPlayerJoins, ClientHandle.NewPlayerJoins },
             { (int)ServerPackets.chatMsgSend, ClientHandle.GetChatMsg },
             { (int)ServerPackets.playerLeaveRoom, ClientHandle.PlayerLeaveRoom },
+            { (int)ServerPackets.playerInGame, ClientHandle.PlayerInGame },
             { (int)ServerPackets.preflop, ClientHandle.Preflop },
             { (int)ServerPackets.idActivePlayer, ClientHandle.ActivePlayer },
 

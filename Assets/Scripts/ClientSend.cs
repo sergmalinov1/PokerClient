@@ -74,21 +74,9 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void Disconect()
-    {
-        using (Packet _packet = new Packet((int)ClientPackets.disconect))
-        {
-            string disconect = "disconect";
-
-            _packet.Write(disconect);
-        
-            SendTCPData(_packet);
-        }
-    }
-
     public static void Rate(int _rate)
     {
-        using (Packet _packet = new Packet((int)ClientPackets.disconect))
+        using (Packet _packet = new Packet((int)ClientPackets.rate))
         {
            
             _packet.Write(_rate);
@@ -97,6 +85,18 @@ public class ClientSend : MonoBehaviour
         }
     }
 
+
+    public static void Disconect()
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.disconect))
+        {
+            string disconect = "disconect";
+
+            _packet.Write(disconect);
+
+            SendTCPData(_packet);
+        }
+    }
 
     #endregion
 }

@@ -15,6 +15,7 @@ public enum ServerPackets
     chatMsgSend,
     playerLeaveRoom,
     preflop,
+    playerInGame,
     idActivePlayer,
 }
 
