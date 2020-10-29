@@ -6,6 +6,13 @@ using System.Net.Sockets;
 using System;
 using UnityEngine.SceneManagement;
 
+public enum PlayerStatus
+{
+    fold = 1,
+    inGame,
+    loser, //Когда полностью проигрался
+}
+
 public class Client : MonoBehaviour
 {
     public static Client instance;
@@ -309,13 +316,14 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.welcome, ClientHandle.Welcome },
             { (int)ServerPackets.authAnswer, ClientHandle.AuthAnswer },
             { (int)ServerPackets.newSpectator, ClientHandle.NewSpectator },
-            { (int)ServerPackets.playerInRoom, ClientHandle.NewPlayer },
+            { (int)ServerPackets.playerInRoom, ClientHandle.PlayerInRoom },
             { (int)ServerPackets.newPlayerJoins, ClientHandle.NewPlayerJoins },
             { (int)ServerPackets.chatMsgSend, ClientHandle.GetChatMsg },
             { (int)ServerPackets.playerLeaveRoom, ClientHandle.PlayerLeaveRoom },
             { (int)ServerPackets.playerInGame, ClientHandle.PlayerInGame },
             { (int)ServerPackets.preflop, ClientHandle.Preflop },
             { (int)ServerPackets.idActivePlayer, ClientHandle.ActivePlayer },
+            { (int)ServerPackets.playerBet, ClientHandle.ActivePlayer },
 
         };
 

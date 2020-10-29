@@ -34,15 +34,16 @@ public class ClientHandle : MonoBehaviour
 
     }
 
-    public static void NewPlayer(Packet _packet)
+    public static void PlayerInRoom(Packet _packet)
     {
         Debug.Log($"NewPlayer");
         int _playerId = _packet.ReadInt();
         string _playerName = _packet.ReadString();
+        PlayerStatus _playerStatus = (PlayerStatus)_packet.ReadInt();
         int _placeNum = _packet.ReadInt();
 
         UIManagerGame.instance.ShowMsgToChat("servise", _playerName);
-        UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
+        UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName, _playerStatus);
        
 
     }
@@ -59,7 +60,6 @@ public class ClientHandle : MonoBehaviour
             UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
         else
             UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName);
-
 
     }
 
@@ -131,6 +131,23 @@ public class ClientHandle : MonoBehaviour
         else
         {
             UIManagerGame.instance.ShowMsgToChat("server", "ходит игрок " + idActivePlayer.ToString());
+        }
+    }
+
+    public static void PlayerBet(Packet _packet)
+    {
+        int idPlayer = _packet.ReadInt();
+        int rate = _packet.ReadInt();
+
+        if(idPlayer != Client.instance.myId)
+        {
+            UIManagerGame.instance.ShowMsgToChat("server", "игрок " + idPlayer.ToString() + " ставка: " + rate.ToString());
+
+            //устанавливаем в кнопки значения
+            // в первую = rate
+            //во вторую = rate х2
+            //проверка на баланс игрока
+
         }
     }
 }
