@@ -323,7 +323,7 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.playerInGame, ClientHandle.PlayerInGame },
             { (int)ServerPackets.preflop, ClientHandle.Preflop },
             { (int)ServerPackets.idActivePlayer, ClientHandle.ActivePlayer },
-            { (int)ServerPackets.playerBet, ClientHandle.ActivePlayer },
+            { (int)ServerPackets.playerBet, ClientHandle.PlayerBet },
 
         };
 

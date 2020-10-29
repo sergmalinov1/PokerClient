@@ -18,6 +18,7 @@ public enum ServerPackets
     playerInGame,
     idActivePlayer,
     playerBet,
+    playerStatus,
 }
 
 /// <summary>Sent from client to server.</summary>

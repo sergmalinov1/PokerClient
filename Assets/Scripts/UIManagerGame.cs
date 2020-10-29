@@ -24,8 +24,8 @@ class UIManagerGame : MonoBehaviour
     public GameObject playerPrefab;
     public Transform gameField;
 
-    private List<Player> opponent = new List<Player>();
-    private Player player = new Player();
+    public List<Player> opponent = new List<Player>();
+    public Player player = new Player();
     public GameObject canvas;
 
     private void Awake()
@@ -83,7 +83,7 @@ class UIManagerGame : MonoBehaviour
 
     public void NewPlayer(int _idPlayer, int _placeNum, string _userName, PlayerStatus _playerStatus = PlayerStatus.inGame)
     {
-        Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
+     //   Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
 
@@ -109,7 +109,7 @@ class UIManagerGame : MonoBehaviour
 
     public void NewOpponent(int _idPlayer, int _placeNum, string _userName, PlayerStatus _playerStatus = PlayerStatus.fold)
     {
-        Debug.Log("NewOpponent _plaseNum " + _placeNum);
+        //Debug.Log("NewOpponent _plaseNum " + _placeNum);
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
 

@@ -76,7 +76,7 @@ public class ClientHandle : MonoBehaviour
 
     public static void PlayerLeaveRoom(Packet _packet)
     {
-        Debug.Log($"PlayerLeaveRoom");
+      //  Debug.Log($"PlayerLeaveRoom");
         string _user = _packet.ReadString();
         int _placeNum = _packet.ReadInt();
         UIManagerGame.instance.LeaveRoom(_placeNum);
@@ -110,8 +110,8 @@ public class ClientHandle : MonoBehaviour
     //    string cardImg1 = card1.ToFilename();
      //   string cardImg2 = card2.ToFilename();
 
-      //  string cards = "Preflop: " + card1.ToString() + " -- " + card2.ToString();
-      //  Debug.Log(cards);
+        string cards = "Preflop: " + card1.ToString() + " -- " + card2.ToString();
+        Debug.Log(cards);
 
      //   UIManagerGame.instance.ShowMsgToChat("server", cards);
 
@@ -136,6 +136,7 @@ public class ClientHandle : MonoBehaviour
 
     public static void PlayerBet(Packet _packet)
     {
+        Debug.Log($"PlayerBet");
         int idPlayer = _packet.ReadInt();
         int rate = _packet.ReadInt();
 
@@ -148,6 +149,31 @@ public class ClientHandle : MonoBehaviour
             //во вторую = rate х2
             //проверка на баланс игрока
 
+        }
+    }
+
+    public static void PlayerStatus(Packet _packet)
+    {
+        Debug.Log($"PlayerStatus");
+        int idPlayer = _packet.ReadInt();
+        PlayerStatus status = (PlayerStatus)_packet.ReadInt();
+
+        if (Client.instance.myId == idPlayer)
+        {
+       //     UIManagerGame.instance.player.Fold();
+        }
+        else
+        {
+            foreach(Player pl in UIManagerGame.instance.opponent)
+            {
+                if (pl.ID == idPlayer)
+                {
+                    if (status == global::PlayerStatus.fold)
+                    {
+                    //    pl.Fold();
+                    }
+                }
+            }
         }
     }
 }

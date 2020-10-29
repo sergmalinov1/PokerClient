@@ -44,4 +44,15 @@ class Player : MonoBehaviour
 
     }
 
+    public void Fold()
+    {
+        cards[0] = null;
+        cards[1] = null;
+
+        RawImage[] rawImage = prefab.GetComponentsInChildren<RawImage>();
+
+        rawImage[0].texture = null;
+        rawImage[1].texture = null;
+    }
+
 }
