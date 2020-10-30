@@ -315,15 +315,22 @@ public class Client : MonoBehaviour
         {
             { (int)ServerPackets.welcome, ClientHandle.Welcome },
             { (int)ServerPackets.authAnswer, ClientHandle.AuthAnswer },
-            { (int)ServerPackets.newSpectator, ClientHandle.NewSpectator },
+            { (int)ServerPackets.startNewGame, ClientHandle.StartNewGame },
+
             { (int)ServerPackets.playerInRoom, ClientHandle.PlayerInRoom },
             { (int)ServerPackets.newPlayerJoins, ClientHandle.NewPlayerJoins },
             { (int)ServerPackets.chatMsgSend, ClientHandle.GetChatMsg },
             { (int)ServerPackets.playerLeaveRoom, ClientHandle.PlayerLeaveRoom },
             { (int)ServerPackets.playerInGame, ClientHandle.PlayerInGame },
-            { (int)ServerPackets.preflop, ClientHandle.Preflop },
+          
             { (int)ServerPackets.idActivePlayer, ClientHandle.ActivePlayer },
             { (int)ServerPackets.playerBet, ClientHandle.PlayerBet },
+            { (int)ServerPackets.playerStatus, ClientHandle.PlayerStatus },
+
+            { (int)ServerPackets.preflop, ClientHandle.Preflop },
+            { (int)ServerPackets.cardOnDesk, ClientHandle.CardOnDeck },
+
+            { (int)ServerPackets.gameResult, ClientHandle.GameResult },
 
         };
 

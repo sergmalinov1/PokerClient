@@ -11,6 +11,12 @@ class Player : MonoBehaviour
 
     public Card[] cards = new Card[2];
 
+
+    public void Awake()
+    {
+
+    }
+
     public void ShowPreflop(Card card1, Card card2)
     {
       //  Debug.Log($"ShowPreflop");
@@ -33,7 +39,7 @@ class Player : MonoBehaviour
 
     public void ShowCover()
     {
-        Debug.Log($"ShowCover");
+     //   Debug.Log($"ShowCover");
 
         Texture2D img = Resources.Load("Cards/cover") as Texture2D;
 
@@ -44,15 +50,30 @@ class Player : MonoBehaviour
 
     }
 
+    public void EnableActiveState()
+    {
+        Image img = prefab.transform.Find("Panel").GetComponent<Image>();
+        img.color = UnityEngine.Color.blue;
+
+      //  Debug.Log($"EnableActiveState");
+
+    }
+
+    public void DisableActiveState()
+    {
+        Image img = prefab.transform.Find("Panel").GetComponent<Image>();
+        img.color = UnityEngine.Color.black;
+    }
+
     public void Fold()
     {
-       /* cards[0] = null;
+        cards[0] = null;
         cards[1] = null;
 
         RawImage[] rawImage = prefab.GetComponentsInChildren<RawImage>();
 
         rawImage[0].texture = null;
-        rawImage[1].texture = null;*/
+        rawImage[1].texture = null;
     }
 
 }

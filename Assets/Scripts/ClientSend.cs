@@ -32,7 +32,6 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-   
 
     public static void SendChatMsg()
     {
@@ -58,11 +57,11 @@ public class ClientSend : MonoBehaviour
 
             SendTCPData(_packet);
         }
-    }
+    }  //вход в комнату 
 
-    public static void JoinTheRoom()
+    public static void JoinTheGame()
     {
-        using (Packet _packet = new Packet((int)ClientPackets.joinTheRoom))
+        using (Packet _packet = new Packet((int)ClientPackets.joinTheGame))
         {
             string join = "JoinTheRoom";
             string roomNum = "Room Number";
@@ -72,7 +71,7 @@ public class ClientSend : MonoBehaviour
 
             SendTCPData(_packet);
         }
-    }
+    } // 
 
     public static void Rate(int _rate)
     {

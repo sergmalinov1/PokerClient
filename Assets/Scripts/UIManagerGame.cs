@@ -23,10 +23,15 @@ class UIManagerGame : MonoBehaviour
     public GameObject[] place = new GameObject[4];
     public GameObject playerPrefab;
     public Transform gameField;
+    public Transform cardOnDeck;
 
-    public List<Player> opponent = new List<Player>();
-    public Player player = new Player();
+    private int colCardOnDesk = 0;
+
+    private List<Player> opponent = new List<Player>();
+    private Player player = new Player();
     public GameObject canvas;
+
+    public int minRate = 0; 
 
     private void Awake()
     {
@@ -78,7 +83,7 @@ class UIManagerGame : MonoBehaviour
         btnJoin.gameObject.SetActive(false);
 
 
-        ClientSend.JoinTheRoom();
+        ClientSend.JoinTheGame();
     }
 
     public void NewPlayer(int _idPlayer, int _placeNum, string _userName, PlayerStatus _playerStatus = PlayerStatus.inGame)
@@ -91,7 +96,7 @@ class UIManagerGame : MonoBehaviour
 
         player.prefab = Instantiate(playerPrefab, pos, rotation, gameField);
 
-        Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
+  //      Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
 
         Text[] content = player.prefab.GetComponentsInChildren<Text>();
 
@@ -131,8 +136,8 @@ class UIManagerGame : MonoBehaviour
         newPlayer.prefab.GetComponent<PlayerScript>().ID = _placeNum;
         newPlayer.prefab.name = "Player_" + _placeNum.ToString();
 
-      //  if (_playerStatus == PlayerStatus.inGame)
-      //      newPlayer.ShowCover();
+        if (_playerStatus == PlayerStatus.inGame)
+            newPlayer.ShowCover();
 
         opponent.Add(newPlayer);
 
@@ -191,14 +196,74 @@ class UIManagerGame : MonoBehaviour
         player.ShowPreflop(card1, card2);
     }
 
+    public void PutCardOnTable(Card card)
+    {
+
+        string fileName = card.ToFilename();
+
+       // Debug.Log($"PutCardOnTable: {fileName}");
+
+        Texture2D img = Resources.Load("Cards/" + fileName) as Texture2D;
+
+        RawImage[] rawImage = cardOnDeck.GetComponentsInChildren<RawImage>();
+
+        if (colCardOnDesk < 5)
+        {
+            rawImage[colCardOnDesk].texture = img;
+            colCardOnDesk++;
+        }
+    }
+
+    public void ClearTable()
+    {
+        colCardOnDesk = 0;
+        Texture2D img = Resources.Load("Cards/cover") as Texture2D;
+
+        RawImage[] rawImage = cardOnDeck.GetComponentsInChildren<RawImage>();
+
+        foreach(RawImage ri in rawImage)
+        {
+            ri.texture = img;
+        }
+    }
+
     public void ShowCover(int idPlayer)
     {
-        Debug.Log($"UI ShowCover");
+    //    Debug.Log($"UI ShowCover");
         foreach (Player pl in opponent)
         {
             if (pl.ID == idPlayer)
                 pl.ShowCover();
 
+        }
+    }
+
+    public void SelectActivePlayer(int idActivePlayer)
+    {       
+
+        if (idActivePlayer == Client.instance.myId)
+        {
+          //  ShowMsgToChat("server", "ваш ход блядь! ");
+            ShowRatesBtn();
+            UnselectActivePlayerAll();
+            player.EnableActiveState();
+
+        }
+        else
+        {
+          //  ShowMsgToChat("server", "ходит игрок " + idActivePlayer.ToString());
+            Player pl = GetOpponentById(idActivePlayer);
+            UnselectActivePlayerAll();
+            pl.EnableActiveState();
+        }
+    }
+
+    private void UnselectActivePlayerAll()
+    {
+        player.DisableActiveState();
+        foreach (Player item in opponent)
+        {
+            item.DisableActiveState();
         }
     }
 
@@ -210,8 +275,9 @@ class UIManagerGame : MonoBehaviour
 
         foreach(Button btn in buttons)
         {
-           // Debug.Log($"Button {btn.name}");
+            // if (btn.name == "check" && minRate > 0)
             btn.gameObject.SetActive(true);
+                    
         }
 
     }
@@ -227,6 +293,51 @@ class UIManagerGame : MonoBehaviour
             // Debug.Log($"Button {btn.name}");
             btn.gameObject.SetActive(false);
         }
+    }
 
+
+
+    public void SetStatusPlayer(int idPlayer, PlayerStatus playerStatus)
+    {
+        //   Debug.Log($"SetStatusPlayer {idPlayer}");
+
+      
+
+        if (Client.instance.myId == idPlayer)
+        {
+            ShowMsgToChat("server", "Вы сбросили карты");
+            player.Fold();
+            
+        }
+        else
+        {
+            foreach (Player pl in opponent)
+            {
+                if (pl.ID == idPlayer)
+                {
+                    if (playerStatus == PlayerStatus.fold)
+                    {
+                        ShowMsgToChat("server", "Игрок " + pl.name + " сбросил карты");
+                        pl.Fold();
+                        
+                    }
+                }
+            }
+        }
+    }
+
+
+    private Player GetOpponentById(int idPlayer)
+    {
+        Player _pl = null;
+        foreach (Player item  in opponent)
+        {
+
+            if (item.ID == idPlayer)
+            {
+                _pl = item;
+            }
+        }
+        return _pl;
     }
 }

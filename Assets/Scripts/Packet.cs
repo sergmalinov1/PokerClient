@@ -9,16 +9,18 @@ public enum ServerPackets
 {
     welcome = 1,
     authAnswer,
-    newSpectator,
     playerInRoom,
     newPlayerJoins,
+    startNewGame,
     chatMsgSend,
     playerLeaveRoom,
-    preflop,
     playerInGame,
     idActivePlayer,
     playerBet,
     playerStatus,
+    preflop,
+    cardOnDesk,
+    gameResult,
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -27,7 +29,7 @@ public enum ClientPackets
     welcomeReceived = 1,
     chatMsgReceived,
     enterTheRoom,
-    joinTheRoom,
+    joinTheGame,
     disconect,
     rate,
 

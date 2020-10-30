@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.Cards;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
+using UnityEditor;
 using UnityEngine;
 
 public class ClientHandle : MonoBehaviour
@@ -18,6 +16,7 @@ public class ClientHandle : MonoBehaviour
 
     public static void AuthAnswer(Packet _packet)
     {
+        Debug.Log($"AuthAnswer");
         string code = _packet.ReadString();
         int num = _packet.ReadInt();
 
@@ -25,32 +24,37 @@ public class ClientHandle : MonoBehaviour
     }
 
 
-    public static void NewSpectator(Packet _packet)
+    public static void GetChatMsg(Packet _packet)
     {
-        int _myId = _packet.ReadInt();
-        string _username = _packet.ReadString();
 
-       // Debug.Log($"NewSpectator: {_myId} + __ + {_username}");
+        string _user = _packet.ReadString();
+        string _msg = _packet.ReadString();
 
+        // Debug.Log($"User {_user} + __ + {_msg}");
+
+        UIManagerGame.instance.ShowMsgToChat(_user, _msg);
     }
 
-    public static void PlayerInRoom(Packet _packet)
+
+    
+    public static void PlayerInRoom(Packet _packet) //для нового пользователя отправляеем список всех пользователей в комнтае
     {
-        Debug.Log($"NewPlayer");
+      //  Debug.Log($"PlayerInRoom");
         int _playerId = _packet.ReadInt();
         string _playerName = _packet.ReadString();
         PlayerStatus _playerStatus = (PlayerStatus)_packet.ReadInt();
         int _placeNum = _packet.ReadInt();
 
         UIManagerGame.instance.ShowMsgToChat("servise", _playerName);
-    //    UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName, _playerStatus);
-        UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
+        UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName, _playerStatus);
+        //  UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
 
 
-    }
+    } 
 
-    public static void NewPlayerJoins(Packet _packet)
+    public static void NewPlayerJoins(Packet _packet) //отправляем всем сообщение что новый игрок присоеденился
     {
+        Debug.Log($"NewPlayerJoins");
         int _playerId = _packet.ReadInt();
         string _playerName = _packet.ReadString();
         int _placeNum = _packet.ReadInt();
@@ -59,46 +63,52 @@ public class ClientHandle : MonoBehaviour
 
         if (_playerId == Client.instance.myId)
         {
-            Debug.Log($"NewPlayer");
+         //   Debug.Log($"NewPlayer");
             UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
         }
         else
         {
-            Debug.Log($"NewOpponent");
+         //   Debug.Log($"NewOpponent");
             UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName);
         }
 
-    }
+    } 
 
-    public static void GetChatMsg(Packet _packet)
+    public static void StartNewGame(Packet _packet)
     {
-        
-        string _user = _packet.ReadString();
-        string _msg = _packet.ReadString();
+        string status = _packet.ReadString();
 
-     // Debug.Log($"User {_user} + __ + {_msg}");
-
-        UIManagerGame.instance.ShowMsgToChat(_user, _msg);
-    }
-
-    public static void PlayerLeaveRoom(Packet _packet)
-    {
-      //  Debug.Log($"PlayerLeaveRoom");
-        string _user = _packet.ReadString();
-        int _placeNum = _packet.ReadInt();
-        UIManagerGame.instance.LeaveRoom(_placeNum);
-
+        string msg = "===Новая игра===";
+        UIManagerGame.instance.ShowMsgToChat("server", msg);
+        UIManagerGame.instance.ClearTable();
     }
 
 
-    public static void PlayerInGame(Packet _packet)
+    public static void PlayerInGame(Packet _packet) //отправляем всем. что данный игрок играет в раздаче
     {
-      
+
+     //   Debug.Log($"PlayerInGame");
         int idPlayer = _packet.ReadInt();
 
         UIManagerGame.instance.ShowCover(idPlayer);
-    }
+    } 
 
+
+    public static void ActivePlayer(Packet _packet) //отправляем всем ID активного играка. тот который ходит
+    {
+        int idActivePlayer = _packet.ReadInt();
+
+        UIManagerGame.instance.SelectActivePlayer(idActivePlayer);
+    }  
+
+    public static void PlayerStatus(Packet _packet)
+    {
+      //  Debug.Log($"PlayerStatus");
+        int idPlayer = _packet.ReadInt();
+        PlayerStatus status = (PlayerStatus)_packet.ReadInt();
+
+        UIManagerGame.instance.SetStatusPlayer(idPlayer, status);
+    }
 
     public static void Preflop(Packet _packet)
     {
@@ -118,39 +128,42 @@ public class ClientHandle : MonoBehaviour
      //   string cardImg2 = card2.ToFilename();
 
         string cards = "Preflop: " + card1.ToString() + " -- " + card2.ToString();
-        Debug.Log(cards);
+     //   Debug.Log(cards);
 
      //   UIManagerGame.instance.ShowMsgToChat("server", cards);
 
 
     }
 
-    public static void ActivePlayer(Packet _packet)
+    public static void CardOnDeck(Packet _packet)
     {
-        int idActivePlayer = _packet.ReadInt();
+        // string gameStatus;
+        CardSuit cardSuit = (CardSuit)_packet.ReadInt();
+        CardType cardType = (CardType)_packet.ReadInt();  
 
-        if(idActivePlayer == Client.instance.myId)
-        {
-            UIManagerGame.instance.ShowMsgToChat("server", "ваш ход блядь ");
-            UIManagerGame.instance.ShowRatesBtn();
+        Card card = new Card(cardSuit, cardType);
+        UIManagerGame.instance.PutCardOnTable(card);
 
-        }
-        else
-        {
-            UIManagerGame.instance.ShowMsgToChat("server", "ходит игрок " + idActivePlayer.ToString());
-        }
     }
+
 
     public static void PlayerBet(Packet _packet)
     {
-        Debug.Log($"PlayerBet");
+        //Debug.Log($"PlayerBet");
         int idPlayer = _packet.ReadInt();
         int rate = _packet.ReadInt();
 
-        if(idPlayer != Client.instance.myId)
+        if (rate >= 0)
         {
-            UIManagerGame.instance.ShowMsgToChat("server", "игрок " + idPlayer.ToString() + " ставка: " + rate.ToString());
+          //  UIManagerGame.instance.minRate = rate;
+        }
 
+        if (idPlayer != Client.instance.myId)
+        {
+           // UIManagerGame.instance.ShowMsgToChat("server", "игрок " + idPlayer.ToString() + " ставка: " + rate.ToString());
+
+
+            
             //устанавливаем в кнопки значения
             // в первую = rate
             //во вторую = rate х2
@@ -159,28 +172,41 @@ public class ClientHandle : MonoBehaviour
         }
     }
 
-    public static void PlayerStatus(Packet _packet)
+    public static void PlayerLeaveRoom(Packet _packet)
     {
-        Debug.Log($"PlayerStatus");
-        int idPlayer = _packet.ReadInt();
-        PlayerStatus status = (PlayerStatus)_packet.ReadInt();
+        //  Debug.Log($"PlayerLeaveRoom");
+        string _user = _packet.ReadString();
+        int _placeNum = _packet.ReadInt();
+        UIManagerGame.instance.LeaveRoom(_placeNum);
 
-        if (Client.instance.myId == idPlayer)
-        {
-       //     UIManagerGame.instance.player.Fold();
-        }
-        else
-        {
-            foreach(Player pl in UIManagerGame.instance.opponent)
-            {
-                if (pl.ID == idPlayer)
-                {
-                    if (status == global::PlayerStatus.fold)
-                    {
-                    //    pl.Fold();
-                    }
-                }
-            }
-        }
     }
+
+    public static void GameResult(Packet _packet)
+    {
+        //  Debug.Log($"PlayerLeaveRoom");
+        string temp = _packet.ReadString();
+
+        string msg = "";
+        if(temp == "aaa")
+            msg = "Победила Дружба!)) Потому что я еще не прикрутил проверку на победителя";
+        else
+            msg = "Победил игрок: " + temp.ToString();
+
+
+        UIManagerGame.instance.ShowMsgToChat("server", msg);
+
+
+    }
+
+    /*
+     
+    public static void NewSpectator(Packet _packet)
+    {
+        int _myId = _packet.ReadInt();
+        string _username = _packet.ReadString();
+
+       // Debug.Log($"NewSpectator: {_myId} + __ + {_username}");
+
+    }
+     */
 }
