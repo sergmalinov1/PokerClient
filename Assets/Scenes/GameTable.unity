@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2371,6 +2371,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 54233102229761777, guid: 6f7379c18f41a934088b7fb7fa98cc2c,
     type: 3}
   gameField: {fileID: 325953743}
+  opponent: []
+  player: {fileID: 0}
   canvas: {fileID: 992689135}
 --- !u!4 &1275873626
 Transform:
@@ -3808,11 +3810,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6093739898889491540, guid: 4f85d3d79ce28f142887c261d66d71bb,
-        type: 3}
-      propertyPath: m_Name
-      value: Message
-      objectReference: {fileID: 0}
     - target: {fileID: 2973037637861999020, guid: 4f85d3d79ce28f142887c261d66d71bb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3917,6 +3914,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6093739898889491540, guid: 4f85d3d79ce28f142887c261d66d71bb,
+        type: 3}
+      propertyPath: m_Name
+      value: Message
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f85d3d79ce28f142887c261d66d71bb, type: 3}

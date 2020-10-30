@@ -43,8 +43,9 @@ public class ClientHandle : MonoBehaviour
         int _placeNum = _packet.ReadInt();
 
         UIManagerGame.instance.ShowMsgToChat("servise", _playerName);
-        UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName, _playerStatus);
-       
+    //    UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName, _playerStatus);
+        UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
+
 
     }
 
@@ -56,10 +57,16 @@ public class ClientHandle : MonoBehaviour
 
         UIManagerGame.instance.ShowMsgToChat("service", _playerName);
 
-        if(_playerId == Client.instance.myId)
+        if (_playerId == Client.instance.myId)
+        {
+            Debug.Log($"NewPlayer");
             UIManagerGame.instance.NewPlayer(_playerId, _placeNum, _playerName);
+        }
         else
+        {
+            Debug.Log($"NewOpponent");
             UIManagerGame.instance.NewOpponent(_playerId, _placeNum, _playerName);
+        }
 
     }
 

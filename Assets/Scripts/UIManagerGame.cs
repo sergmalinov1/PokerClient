@@ -83,13 +83,15 @@ class UIManagerGame : MonoBehaviour
 
     public void NewPlayer(int _idPlayer, int _placeNum, string _userName, PlayerStatus _playerStatus = PlayerStatus.inGame)
     {
-     //   Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
+        
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
 
 
 
         player.prefab = Instantiate(playerPrefab, pos, rotation, gameField);
+
+        Debug.Log($"NewPlayer 222 " + _idPlayer.ToString());
 
         Text[] content = player.prefab.GetComponentsInChildren<Text>();
 
@@ -109,7 +111,7 @@ class UIManagerGame : MonoBehaviour
 
     public void NewOpponent(int _idPlayer, int _placeNum, string _userName, PlayerStatus _playerStatus = PlayerStatus.fold)
     {
-        //Debug.Log("NewOpponent _plaseNum " + _placeNum);
+        Debug.Log("NewOpponent _plaseNum " + _placeNum);
         Vector3 pos = place[_placeNum].transform.position;
         Quaternion rotation = place[_placeNum].transform.rotation;
 
@@ -129,8 +131,8 @@ class UIManagerGame : MonoBehaviour
         newPlayer.prefab.GetComponent<PlayerScript>().ID = _placeNum;
         newPlayer.prefab.name = "Player_" + _placeNum.ToString();
 
-        if (_playerStatus == PlayerStatus.inGame)
-            newPlayer.ShowCover();
+      //  if (_playerStatus == PlayerStatus.inGame)
+      //      newPlayer.ShowCover();
 
         opponent.Add(newPlayer);
 
